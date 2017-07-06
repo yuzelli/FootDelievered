@@ -3,8 +3,6 @@ package com.example.yuzelli.fooddelivered.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.yuzelli.fooddelivered.R;
 import com.example.yuzelli.fooddelivered.base.BaseActivity;
-import com.example.yuzelli.fooddelivered.view.fragment.HistoryOrderFragment;
+import com.example.yuzelli.fooddelivered.view.fragment.OrderFragment;
 import com.example.yuzelli.fooddelivered.view.fragment.NowOrderFragment;
 import com.example.yuzelli.fooddelivered.view.fragment.PersonalFragment;
 
@@ -28,12 +26,12 @@ public class MainActivity extends BaseActivity {
     private LayoutInflater layoutInflater;
 
     //定义数组来存放user的Fragment界面
-    private Class fragmentArray[] = {NowOrderFragment.class, HistoryOrderFragment.class, PersonalFragment.class};
+    private Class fragmentArray[] = {NowOrderFragment.class, OrderFragment.class, PersonalFragment.class};
     //定义数组来存放的按钮图片
     private int tabImageViewArray[] = {R.drawable.tab_yan, R.drawable.tab_order,
             R.drawable.tab_mine};
     //Tab选项卡的文字
-    private String tabtTextViewArray[] = {"当前任务", "历时订单", "个人中心"};
+    private String tabtTextViewArray[] = {"当前任务", "订单", "个人中心"};
     @Override
     protected int layoutInit() {
         return R.layout.activity_main;

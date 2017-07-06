@@ -6,6 +6,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 
+import com.example.yuzelli.fooddelivered.utils.ActivityCollectorUtil;
 import com.example.yuzelli.fooddelivered.utils.MyToast;
 
 import butterknife.ButterKnife;
@@ -36,6 +37,7 @@ public abstract class BaseActivity extends FragmentActivity {
         unbinder= ButterKnife.bind(this);
         viewInit();
         binEvent();
+        ActivityCollectorUtil.addActivity(this);
     }
     /**
      * 统一显示toast
@@ -60,6 +62,7 @@ public abstract class BaseActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollectorUtil.removeActivity(this);
         unbinder.unbind();
     }
 

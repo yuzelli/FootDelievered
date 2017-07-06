@@ -32,4 +32,8 @@ dependencies {
     compile files('libs/okhttp-3.1.2.jar')
     compile files('libs/okio-1.6.0_okhttp_reference_jar.jar')
     compile files('libs/universal-image-loader-1.9.3.jar')
+    //    选项卡依赖
+    compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    //Optional: see how to use the utility.
+    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar'
 }

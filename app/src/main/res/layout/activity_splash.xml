@@ -24,7 +24,7 @@
         android:textSize="25sp"
         android:id="@+id/tv_title"
         android:layout_centerInParent="true"
-        android:text="欢迎"/>
+        android:text="欢迎使用美食速递app"/>
 
     <TextView
         android:layout_width="match_parent"

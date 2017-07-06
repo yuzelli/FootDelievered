@@ -11,7 +11,10 @@ import android.os.SystemClock;
 import android.widget.ImageView;
 import com.example.yuzelli.fooddelivered.R;
 import com.example.yuzelli.fooddelivered.base.BaseActivity;
+import com.example.yuzelli.fooddelivered.bean.UserInfo;
 import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
+import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
+
 import java.util.Random;
 
 /**
@@ -75,7 +78,13 @@ public class SplashActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case ConstantsUtils.SPLASH_START_ACTIVITY:
-
+                    UserInfo userInfo = (UserInfo) SharePreferencesUtil.readObject(context,ConstantsUtils.SP_LOGIN_USER_INFO);
+                    if (userInfo==null){
+                        LoginActivity.startAction(context);
+                    }else {
+                        MainActivity.actionStart(context);
+                    }
+                    finish();
                     break;
                 case ConstantsUtils.LOGIN_GET_DATA:
 
