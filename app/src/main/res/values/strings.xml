@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">美食速递</string>
+
+    <string name="user_register">用户注册</string>
+    <string name="user_login">用户登录</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="phone">手机号</string>
+    <string name="password">密码</string>
+    <string name="agree">我已阅读并同意米赚</string>
+    <string name="protocol"><u>《用户服务协议》</u></string>
+
+    <string name="confirm_password">确认密码</string>
+    <string name="verification_code">验证码</string>
+    <string name="send_verification_code">发送验证码</string>
+</resources>
