@@ -113,6 +113,8 @@ public class RegisterActivity extends BaseActivity {
                     showToast("密码或者电话号码为空！");
                 }else if (code == 104){
                     showToast("已注册过了！");
+                }else {
+                    showToast("数据获取失败！");
                 }
             }
         });

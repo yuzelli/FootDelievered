@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.yuzelli.fooddelivered.view.fragment.OrderFragment">
 
-</LinearLayout>
+    <include
+        android:id="@+id/include_common_topbar"
+        layout="@layout/include_common_topbar" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/include_common_topbar"
+        android:background="@color/white">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/lv_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/listview_line_bg"
+            android:dividerHeight="1dp"
+            ptr:ptrMode="both" />
+
+        <include layout="@layout/empty_view" />
+
+    </FrameLayout>
+
+
+
+
+</RelativeLayout>

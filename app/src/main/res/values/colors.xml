@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="main_color">#b2b2b2</color>
     <color name="next_color">#333333</color>
+    <color name="listview_line_bg">#333333</color>
 
 
     <color name="transparent">#00000000</color><!--透明-->

@@ -155,6 +155,7 @@ public class LoginActivity extends BaseActivity {
                     String password = etPassword.getText().toString().trim();
                     SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_LOGIN_USER_INFO, new UserInfo(mobile, password));
                     MainActivity.actionStart(context);
+                    finish();
                     break;
                 default:
                     break;
