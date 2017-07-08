@@ -6,11 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yuzelli.fooddelivered.R;
 import com.example.yuzelli.fooddelivered.base.BaseActivity;
@@ -23,6 +25,7 @@ import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -49,6 +52,7 @@ public class LoginActivity extends BaseActivity {
 
     private LoginHandler handler;
     private Context context;
+    private UserInfo userInfo;
 
 
     @Override
@@ -112,7 +116,10 @@ public class LoginActivity extends BaseActivity {
                 int code = json.optInt("code");
                 if (code == 200) {
                     showToast("登录成功！");
-                    handler.sendEmptyMessage(ConstantsUtils.LOGIN_GET_DATA);
+                    Message msg = new Message();
+                    msg.obj = json.optString("stId");
+                    msg.what = ConstantsUtils.LOGIN_GET_DATA;
+                    handler.sendMessage(msg);
                 } else if (code == 201) {
                     showToast("用户不存在！");
                 } else if (code == 202) {
@@ -153,7 +160,8 @@ public class LoginActivity extends BaseActivity {
                 case ConstantsUtils.LOGIN_GET_DATA:
                     String mobile = userPhone.getText().toString().trim();
                     String password = etPassword.getText().toString().trim();
-                    SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_LOGIN_USER_INFO, new UserInfo(mobile, password));
+                    String stId = (String) msg.obj;
+                    SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_LOGIN_USER_INFO, new UserInfo(mobile, password,stId));
                     MainActivity.actionStart(context);
                     finish();
                     break;
@@ -162,5 +170,22 @@ public class LoginActivity extends BaseActivity {
             }
         }
     }
+
+    long exitTime = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }
 

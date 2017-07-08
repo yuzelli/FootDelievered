@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/include_common_topbar"
         layout="@layout/include_common_topbar" />
+
+    <RelativeLayout
+        android:id="@+id/rl_tongji"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_common_topbar">
+        <TextView
+            android:id="@+id/tv_yue_order_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="@color/next_color"
+            android:text="本月订单：20单"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/tv_all_order_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/tv_yue_order_num"
+            android:textColor="@color/next_color"
+            android:text="总订单：20单"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/main_color"
+           android:gravity="center"
+            android:layout_below="@+id/tv_all_order_num"
+            android:textColor="@color/white"
+            android:text="我的订单"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_tongji"
+        android:background="@color/white">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/lv_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/listview_line_bg"
+            android:dividerHeight="1dp"
+            ptr:ptrMode="both" />
+
+        <include layout="@layout/empty_view" />
+
+    </FrameLayout>
+
 
 </RelativeLayout>

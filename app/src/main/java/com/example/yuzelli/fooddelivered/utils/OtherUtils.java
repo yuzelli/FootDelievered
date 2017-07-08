@@ -1,5 +1,6 @@
 package com.example.yuzelli.fooddelivered.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +25,21 @@ public class OtherUtils {
             b = matcher.matches();
         }
         return b;
+    }
+
+    /**
+     * 日期格式字符串转换成时间戳
+     * @param format 如：
+     * @return
+     */
+    public static long date2TimeStamp(String date_str){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return sdf.parse(date_str).getTime()/1000;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 

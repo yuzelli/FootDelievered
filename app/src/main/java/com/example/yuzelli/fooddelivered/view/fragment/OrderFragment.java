@@ -21,6 +21,7 @@ import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
 import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
 import com.example.yuzelli.fooddelivered.utils.CommonAdapter;
 import com.example.yuzelli.fooddelivered.utils.ViewHolder;
+import com.example.yuzelli.fooddelivered.view.activity.OrderDetailActivity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -134,7 +135,7 @@ public class OrderFragment extends BaseFragment {
         lvOrder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                orderListDatas.get(position+1);
+                OrderDetailActivity.actionStart(context, orderListDatas.get(position-1));
             }
         });
         lvOrder.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {

@@ -9,10 +9,20 @@ import java.io.Serializable;
 public class UserInfo implements Serializable {
     private String mobile;
     private String password;
+    private String stId;
 
-    public UserInfo(String mobile, String password) {
+    public UserInfo(String mobile, String password,String stId) {
         this.mobile = mobile;
         this.password = password;
+        this.stId = stId;
+    }
+
+    public String getStId() {
+        return stId;
+    }
+
+    public void setStId(String stId) {
+        this.stId = stId;
     }
 
     public String getMobile() {
