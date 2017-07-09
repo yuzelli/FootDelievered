@@ -2,6 +2,7 @@ package com.example.yuzelli.fooddelivered.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,7 +19,12 @@ import com.example.yuzelli.fooddelivered.bean.UserInfo;
 import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
 import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
 import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
+import com.example.yuzelli.fooddelivered.view.fragment.OrderFragment;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.json.JSONObject;
 
@@ -60,9 +66,38 @@ public class OrderDetailActivity extends BaseActivity {
         handler = new OrderDetailHandler();
         Intent intent = getIntent();
         mOrder = (OrderBean) intent.getSerializableExtra("order");
+        tvOrderCreateTime.setText("订单创建时间："+mOrder.getAdd_time());
         context = this;
+        DisplayImageOptions options  = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.def2)        // 设置图片下载期间显示的图片
+                .showImageForEmptyUri(R.drawable.def2)  // 设置图片Uri为空或是错误的时候显示的图片
+                // .cacheInMemory(true)//设置下载的图片是否缓存在内存中
+                .cacheOnDisk(true)//设置下载的图片是否缓存在SD卡中
+                .build();
+
+        ImageLoader.getInstance().loadImage(mOrder.getImg_url(),options, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
 
 
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                imgOrderInfo.setImageBitmap(bitmap);
+
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
     }
 
     public static void actionStart(Context context , OrderBean order){
@@ -112,7 +147,7 @@ public class OrderDetailActivity extends BaseActivity {
                             SharePreferencesUtil.saveObject(context,ConstantsUtils.SP_NOW_ORDER_INFO,now);
                             handler.sendEmptyMessage(ConstantsUtils.RECEIVE_ORDER_LIST_GET_DATA);
                         }else {
-                            showToast("获取数据失败！");
+                            showToast(json.optString("message"));
                         }
 
                     }
@@ -127,6 +162,7 @@ public class OrderDetailActivity extends BaseActivity {
             switch (msg.what)
             {
                 case ConstantsUtils.RECEIVE_ORDER_LIST_GET_DATA:
+                    OrderFragment.needGETOrder = true;
                     finish();
                     break;
                 default:

@@ -29,7 +29,7 @@
         android:layout_marginRight="20dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        android:src="@drawable/splash7" />
+        android:src="@drawable/img_no_order" />
 
     <Button
         android:id="@+id/btn_receive_order"

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textColor="@color/next_color"
-            android:text="本月订单：20单"
+            android:text="本月订单：0单"
             android:textSize="20sp" />
         <TextView
             android:id="@+id/tv_all_order_num"
@@ -27,7 +27,7 @@
             android:layout_margin="10dp"
             android:layout_below="@+id/tv_yue_order_num"
             android:textColor="@color/next_color"
-            android:text="总订单：20单"
+            android:text="总订单：0单"
             android:textSize="20sp" />
 
         <TextView

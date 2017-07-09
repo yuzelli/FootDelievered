@@ -2,6 +2,7 @@ package com.example.yuzelli.fooddelivered.view.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +25,10 @@ import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
 import com.example.yuzelli.fooddelivered.utils.OtherUtils;
 import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.json.JSONObject;
 
@@ -64,12 +69,16 @@ public class NowOrderFragment extends BaseFragment {
     TextView tvHint;
     @BindView(R.id.emptyView)
     RelativeLayout emptyView;
-    Unbinder unbinder;
     private Context context;
     private NowOrderBean now;
     private NowOrderFragmentHandler handler;
 
-
+    DisplayImageOptions options  = new DisplayImageOptions.Builder()
+            .showImageOnLoading(R.drawable.def2)        // 设置图片下载期间显示的图片
+            .showImageForEmptyUri(R.drawable.def2)  // 设置图片Uri为空或是错误的时候显示的图片
+            // .cacheInMemory(true)//设置下载的图片是否缓存在内存中
+            .cacheOnDisk(true)//设置下载的图片是否缓存在SD卡中
+            .build();
     @Override
     protected int layoutInit() {
         return R.layout.fragment_now_order;
@@ -82,14 +91,15 @@ public class NowOrderFragment extends BaseFragment {
         tvRight.setVisibility(View.GONE);
         context = getActivity();
         handler = new NowOrderFragmentHandler();
-
+        beginTimer();
     }
 
     private void beginTimer() {
         Message message = handler.obtainMessage(ConstantsUtils.SENG_COUNT_DOWN_MESSAGE);     // Message
+        handler.obtainMessage(ConstantsUtils.SENG_COUNT_DOWN_MESSAGE);
         handler.sendMessageDelayed(message, 1000);
     }
-
+    private boolean isFirstFlag = false;
     @Override
     protected void fillData() {
         now = (NowOrderBean) SharePreferencesUtil.readObject(context, ConstantsUtils.SP_NOW_ORDER_INFO);
@@ -110,7 +120,31 @@ public class NowOrderFragment extends BaseFragment {
         long order_currt = OtherUtils.date2TimeStamp(now.getConfirm_time());
         long time = System.currentTimeMillis() / 1000;
         current_time = all_time - (int) (time - order_currt);
-        beginTimer();
+        ;
+        ImageLoader.getInstance().loadImage(now.getImg_url(),options, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                imgOrderInfo.setImageBitmap(bitmap);
+
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
+
     }
 
     private void getNowOrder() {
@@ -193,20 +227,6 @@ public class NowOrderFragment extends BaseFragment {
         );
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
     class NowOrderFragmentHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -214,6 +234,9 @@ public class NowOrderFragment extends BaseFragment {
             switch (msg.what) {
                 case ConstantsUtils.SENG_COUNT_DOWN_MESSAGE:
                     current_time--;
+                    if (tvCountDown==null){
+                        return;
+                    }
                     tvCountDown.setText("倒计时：" + setShowCountDownText(current_time));
 
                     if (current_time > 0) {

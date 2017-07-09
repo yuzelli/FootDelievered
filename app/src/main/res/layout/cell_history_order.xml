@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:textColor="@color/next_color"
-      android:layout_toLeftOf="@+id/tv_state"
+        android:layout_toLeftOf="@+id/tv_state"
         android:textSize="18sp" />
 
     <TextView

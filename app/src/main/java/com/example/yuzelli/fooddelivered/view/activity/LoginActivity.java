@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import com.example.yuzelli.fooddelivered.base.BaseActivity;
 import com.example.yuzelli.fooddelivered.bean.UserInfo;
 import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
 import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
+import com.example.yuzelli.fooddelivered.reciver.JPushReceiver;
 import com.example.yuzelli.fooddelivered.utils.OtherUtils;
 import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
 
@@ -27,10 +29,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import okhttp3.Request;
 
 
@@ -163,6 +168,12 @@ public class LoginActivity extends BaseActivity {
                     String stId = (String) msg.obj;
                     SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_LOGIN_USER_INFO, new UserInfo(mobile, password,stId));
                     MainActivity.actionStart(context);
+                    JPushInterface.setAlias(context, stId, new TagAliasCallback() {
+                        @Override
+                        public void gotResult(int i, String s, Set<String> set) {
+                            Log.d("--->",i+s+"");
+                        }
+                    });
                     finish();
                     break;
                 default:

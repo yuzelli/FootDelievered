@@ -1,6 +1,8 @@
 package com.example.yuzelli.fooddelivered.view.fragment;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -58,8 +60,10 @@ public class OrderFragment extends BaseFragment {
     private OrderFragmentHandler handler;
     private Context context;
 
-    private String lastResult;
+    private static String lastResult;
+    private SoundPool soundPool;
 
+    public static boolean needGETOrder = false;
 
     @Override
     protected int layoutInit() {
@@ -70,14 +74,18 @@ public class OrderFragment extends BaseFragment {
     protected void bindEvent(View v) {
         ivLeft.setVisibility(View.GONE);
         tvRight.setVisibility(View.GONE);
-        tvCenter.setText("新订单！");
+        tvCenter.setText("订单列表");
         tvHint.setText("暂无新的订单");
         handler = new OrderFragmentHandler();
         context = getActivity();
         lvOrder.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         doGetOrderList();
-    }
+        soundPool  = new SoundPool(21, AudioManager.STREAM_SYSTEM,10);
+        soundPool.load(context,R.raw.test,1);
 
+        Message message = handler.obtainMessage(ConstantsUtils.SENG_GET_ORDER_MESSAGE);     // Message
+        handler.sendMessageDelayed(message, 30*1000);
+    }
     private void doGetOrderList() {
 
         OkHttpClientManager.postAsync(ConstantsUtils.ADDRESS_URL + ConstantsUtils.NEW_ORDER_LIST, null, new OkHttpClientManager.DataCallBack() {
@@ -90,10 +98,16 @@ public class OrderFragment extends BaseFragment {
                     @Override
                     public void requestSuccess(String result) throws Exception {
                         lvOrder.onRefreshComplete();
+
                         String first = result.substring(0, 1);
                         if (first.equals("{")) {
                             return;
                         } else {
+                            if (result.equals(lastResult)){
+
+                                return;
+                            }
+                            showHintSound();
                             lastResult = result;
                             orderListDatas = OrderBean.getOrderList(result);
                             handler.sendEmptyMessage(ConstantsUtils.NEW_ORDER_LIST_GET_DATA);
@@ -103,9 +117,20 @@ public class OrderFragment extends BaseFragment {
         );
     }
 
+    private void showHintSound() {
+
+        soundPool.play(1,1, 1, 0, 0,  1f);
+    }
+
     @Override
     protected void fillData() {
-
+      //  handler = new OrderFragmentHandler();
+//        Message message = handler.obtainMessage(ConstantsUtils.SENG_GET_ORDER_MESSAGE);     // Message
+//        handler.sendMessageDelayed(message, 5*1000);
+        if (needGETOrder){
+            doGetOrderList();
+            needGETOrder = false;
+        }
     }
 
 
@@ -117,11 +142,17 @@ public class OrderFragment extends BaseFragment {
                 case ConstantsUtils.NEW_ORDER_LIST_GET_DATA:
                     updataListView();
                     break;
+                case ConstantsUtils.SENG_GET_ORDER_MESSAGE:
+                    doGetOrderList();
+                    Message message = handler.obtainMessage(ConstantsUtils.SENG_GET_ORDER_MESSAGE);
+                    handler.sendMessageDelayed(message, 5*1000);
+                    break;
                 default:
                     break;
             }
         }
     }
+
 
     private void updataListView() {
         lvOrder.setEmptyView(emptyView);
@@ -141,7 +172,9 @@ public class OrderFragment extends BaseFragment {
         lvOrder.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                lastResult = "";
                 doGetOrderList();
+
             }
         });
     }

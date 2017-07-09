@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,13 +36,17 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import okhttp3.Request;
 
 /**
@@ -59,6 +64,10 @@ public class PersonalFragment extends BaseFragment {
     PullToRefreshListView lvOrder;
     @BindView(R.id.tv_hint)
     TextView tvHint;
+    @BindView(R.id.tv_yue_order_num)
+    TextView tv_yue_order_num;
+    @BindView(R.id.tv_all_order_num)
+    TextView tv_all_order_num;
     @BindView(R.id.emptyView)
     RelativeLayout emptyView;
 
@@ -82,6 +91,9 @@ public class PersonalFragment extends BaseFragment {
     }
 
     private void getUserOrderList() {
+
+
+
         UserInfo user = (UserInfo) SharePreferencesUtil.readObject(context, ConstantsUtils.SP_LOGIN_USER_INFO);
         Map<String, String> map = new HashMap<>();
         map.put("stId", user.getStId());
@@ -122,8 +134,16 @@ public class PersonalFragment extends BaseFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_LOGIN_USER_INFO, null);
+                SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_NOW_ORDER_INFO, null);
+                JPushInterface.setAlias(context, "", new TagAliasCallback() {
+                    @Override
+                    public void gotResult(int i, String s, Set<String> set) {
+
+                    }
+                });
                 ActivityCollectorUtil.finishAll();
                 LoginActivity.startAction(context);
+
             }
         });
         builder.setNegativeButton("取消", null);
@@ -148,6 +168,23 @@ public class PersonalFragment extends BaseFragment {
     }
 
     private void updataListView() {
+        int yueOrder  = 0;
+        int all  = 0;
+        Calendar c = Calendar.getInstance();
+
+       int month = c.get(Calendar.MONTH)+1;
+
+        for (HistoryOrderBean history :orderList){
+            all++;
+            String time = history.getFinished_time().substring(5,7).replaceAll("0","");
+            if (Integer.valueOf(time)==month){
+                yueOrder++;
+            }
+
+            Log.d("","");
+        }
+        tv_yue_order_num.setText("本月订单："+yueOrder+"单");
+        tv_all_order_num.setText("所以订单："+all+"单");
         lvOrder.setAdapter(new CommonAdapter<HistoryOrderBean>(context, orderList, R.layout.cell_history_order) {
             @Override
             public void convert(ViewHolder helper, HistoryOrderBean item, int position) {

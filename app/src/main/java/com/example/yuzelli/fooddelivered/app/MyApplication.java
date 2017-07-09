@@ -6,6 +6,8 @@ import android.content.Context;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by 51644 on 2017/5/16.
  */
@@ -19,7 +21,8 @@ public class MyApplication extends Application {
         super.onCreate();
         context = this;
 
-
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         initImageLoader(getApplicationContext());
     }
     public static void initImageLoader(Context context) {

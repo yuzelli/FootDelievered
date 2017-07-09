@@ -18,6 +18,24 @@ public class OrderBean implements Serializable {
     private String username;
     private String mobile;
     private String address;
+    private String img_url;
+    private String add_time;
+
+    public String getAdd_time() {
+        return add_time;
+    }
+
+    public void setAdd_time(String add_time) {
+        this.add_time = add_time;
+    }
+
+    public String getImg_url() {
+        return img_url;
+    }
+
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
+    }
 
     public static ArrayList<OrderBean> getOrderList(String jsonArray){
         return GsonUtils.jsonToArrayList(jsonArray,OrderBean.class);
