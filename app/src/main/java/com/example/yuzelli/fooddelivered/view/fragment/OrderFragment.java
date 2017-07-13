@@ -159,8 +159,8 @@ public class OrderFragment extends BaseFragment {
         lvOrder.setAdapter(new CommonAdapter<OrderBean>(context,orderListDatas,R.layout.cell_order_item) {
             @Override
             public void convert(ViewHolder helper, OrderBean item, int position) {
-                helper.setText(R.id.tv_userName,item.getUsername());
-                helper.setText(R.id.tv_userAddress,item.getAddress());
+                helper.setImageByUrl(R.id.img_icon,item.getImg_url());
+                helper.setText(R.id.tv_orderTimes,item.getAdd_time());
             }
         });
         lvOrder.setOnItemClickListener(new AdapterView.OnItemClickListener() {

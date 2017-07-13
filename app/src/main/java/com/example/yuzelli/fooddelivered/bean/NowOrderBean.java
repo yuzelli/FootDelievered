@@ -8,17 +8,20 @@ import java.io.Serializable;
 
 public class NowOrderBean implements Serializable {
 
+
     /**
-     * order_id : 5
+     * order_id : 14
      * order_status : 1
-     * stId : 4
+     * stId : 6
      * tel : 13133443006
-     * mobile : 4
-     * username : 4
-     * address : 4
-     * img_url :
-     * add_time : 2017-07-08 22:10:08
-     * confirm_time : 2017-07-09 00:54:07
+     * mobile :
+     * username :
+     * address :
+     * img_url : 596229fedb9c7.png
+     * add_time : 2017-07-09 21:05:02
+     * confirm_time : 2017-07-10 07:56:23
+     * outtime : 0
+     * sended_time : 2017-07-10 07:56:23
      */
 
     private String order_id;
@@ -31,6 +34,8 @@ public class NowOrderBean implements Serializable {
     private String img_url;
     private String add_time;
     private String confirm_time;
+    private String outtime;
+    private String sended_time;
 
     public String getOrder_id() {
         return order_id;
@@ -110,5 +115,21 @@ public class NowOrderBean implements Serializable {
 
     public void setConfirm_time(String confirm_time) {
         this.confirm_time = confirm_time;
+    }
+
+    public String getOuttime() {
+        return outtime;
+    }
+
+    public void setOuttime(String outtime) {
+        this.outtime = outtime;
+    }
+
+    public String getSended_time() {
+        return sended_time;
+    }
+
+    public void setSended_time(String sended_time) {
+        this.sended_time = sended_time;
     }
 }

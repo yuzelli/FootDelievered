@@ -142,9 +142,8 @@ public class OrderDetailActivity extends BaseActivity {
                         int code = json.optInt("code");
                         if (code == 108) {
                             showToast("接单成功成功！");
-                            Gson gson = new Gson();
-                            NowOrderBean now = gson.fromJson(json.optString("order_info"),NowOrderBean.class);
-                            SharePreferencesUtil.saveObject(context,ConstantsUtils.SP_NOW_ORDER_INFO,now);
+
+
                             handler.sendEmptyMessage(ConstantsUtils.RECEIVE_ORDER_LIST_GET_DATA);
                         }else {
                             showToast(json.optString("message"));

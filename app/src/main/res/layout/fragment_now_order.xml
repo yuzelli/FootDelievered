@@ -1,55 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-
     <include
-
         android:id="@+id/include_common_topbar"
         layout="@layout/include_common_topbar" />
-    <LinearLayout
-        android:id="@+id/ll_have_order"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_count_down"
+        android:layout_below="@+id/include_common_topbar"
+        android:background="@color/white">
+        <include layout="@layout/empty_view" />
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/lv_order"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="倒计时：59分59秒"
-            android:textColor="@color/next_color"
-            android:textSize="25sp" />
-
-        <ImageView
-            android:id="@+id/img_order_info"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_no_order" />
-
-        <Button
-            android:id="@+id/btn_finish_order"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/shape_corner_login"
-            android:text="@string/finish"
-            android:textColor="@color/white"
-            android:layout_marginBottom="10dp"
-            android:textSize="20sp" />
-    </LinearLayout>
-    <include
-        android:id="@+id/emptyView"
-        layout="@layout/empty_view"/>
+            android:layout_height="match_parent"
+            android:divider="@color/listview_line_bg"
+            android:dividerHeight="1dp"
+            ptr:ptrMode="both" />
 
 
 
-</LinearLayout>
+    </FrameLayout>
+
+
+</RelativeLayout>

@@ -2,38 +2,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:orientation="vertical"
-    android:padding="10dp">
-
+    android:padding="10dp"
+    >
     <ImageView
         android:id="@+id/img_icon"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:textSize="18sp"
         android:scaleType="fitXY"
         android:textColor="@color/next_color"
-        android:textSize="18sp" />
-
+        />
     <TextView
         android:id="@+id/tv_orderTimes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/img"
-        android:layout_toRightOf="@+id/img_icon"
+        android:textSize="18sp"
         android:gravity="center"
-        android:lines="2"
         android:textColor="@color/next_color"
-        android:textSize="18sp" />
-
+        android:layout_toLeftOf="@+id/img"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/img_icon"
+        android:lines="2"
+        />
     <ImageView
         android:id="@+id/img"
         android:layout_width="30dp"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-
-        android:src="@mipmap/ic_right2" />
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/ic_right2"/>
 
 </RelativeLayout>
