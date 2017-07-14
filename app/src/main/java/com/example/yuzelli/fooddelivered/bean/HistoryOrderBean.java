@@ -8,18 +8,21 @@ import java.io.Serializable;
 
 public class HistoryOrderBean implements Serializable {
 
+
     /**
-     * order_id : 5
+     * order_id : 26
      * order_status : 2
-     * stId : 4
+     * stId : 6
      * tel : 13133443006
-     * mobile : 4
-     * username : 4
-     * address : 4
-     * img_url :
-     * add_time : 2017-07-08 22:10:08
-     * confirm_time : 2017-07-09 00:54:07
-     * finished_time : 2017-07-09 02:02:06
+     * mobile : 13133223002
+     * username :
+     * address :
+     * img_url : http://plum-public.stor.sinaapp.com/Uploads/596834ca2e93d.png
+     * add_time : 2017-07-14 11:04:42
+     * confirm_time : 2017-07-14 11:22:11
+     * finished_time : 2017-07-14 11:22:29
+     * outtime : 30
+     * sended_time : 2017-07-14 11:52:11
      */
 
     private String order_id;
@@ -33,6 +36,8 @@ public class HistoryOrderBean implements Serializable {
     private String add_time;
     private String confirm_time;
     private String finished_time;
+    private String outtime;
+    private String sended_time;
 
     public String getOrder_id() {
         return order_id;
@@ -120,5 +125,21 @@ public class HistoryOrderBean implements Serializable {
 
     public void setFinished_time(String finished_time) {
         this.finished_time = finished_time;
+    }
+
+    public String getOuttime() {
+        return outtime;
+    }
+
+    public void setOuttime(String outtime) {
+        this.outtime = outtime;
+    }
+
+    public String getSended_time() {
+        return sended_time;
+    }
+
+    public void setSended_time(String sended_time) {
+        this.sended_time = sended_time;
     }
 }

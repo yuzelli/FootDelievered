@@ -22,11 +22,13 @@ import com.example.yuzelli.fooddelivered.base.BaseFragment;
 import com.example.yuzelli.fooddelivered.bean.HistoryOrderBean;
 import com.example.yuzelli.fooddelivered.bean.NowOrderBean;
 import com.example.yuzelli.fooddelivered.bean.UserInfo;
+import com.example.yuzelli.fooddelivered.bean.UserOrderInfo;
 import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
 import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
 import com.example.yuzelli.fooddelivered.utils.ActivityCollectorUtil;
 import com.example.yuzelli.fooddelivered.utils.CommonAdapter;
 import com.example.yuzelli.fooddelivered.utils.GsonUtils;
+import com.example.yuzelli.fooddelivered.utils.OtherUtils;
 import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
 import com.example.yuzelli.fooddelivered.utils.ViewHolder;
 import com.example.yuzelli.fooddelivered.view.activity.LoginActivity;
@@ -74,6 +76,8 @@ public class PersonalFragment extends BaseFragment {
     private Context context;
     private PersionFragmentHandler handler;
     private ArrayList<HistoryOrderBean> orderList;
+    public static boolean isNeedGetNewOrderListData = false;
+    private int page = 0 ;
 
     @Override
     protected int layoutInit() {
@@ -86,18 +90,20 @@ public class PersonalFragment extends BaseFragment {
         tvCenter.setText("个人中心");
         tvRight.setText("退出");
         context = getActivity();
+        orderList = new ArrayList<>();
         handler = new PersionFragmentHandler();
         getUserOrderList();
+        getUserInfo();
+
     }
 
     private void getUserOrderList() {
-
-
 
         UserInfo user = (UserInfo) SharePreferencesUtil.readObject(context, ConstantsUtils.SP_LOGIN_USER_INFO);
         Map<String, String> map = new HashMap<>();
         map.put("stId", user.getStId());
         map.put("mobile", user.getMobile());
+        map.put("page", page+"");
         OkHttpClientManager.postAsync(ConstantsUtils.ADDRESS_URL + ConstantsUtils.GET_HISTORY_ORDER_LIST, map, new OkHttpClientManager.DataCallBack() {
                     @Override
                     public void requestFailure(Request request, IOException e) {
@@ -108,8 +114,15 @@ public class PersonalFragment extends BaseFragment {
                     @Override
                     public void requestSuccess(String result) throws Exception {
                         lvOrder.onRefreshComplete();
-                        orderList = GsonUtils.jsonToArrayList(result, HistoryOrderBean.class);
-                        handler.sendEmptyMessage(ConstantsUtils.GET_HISTORY_ORDER_DATA);
+                        if (result.substring(0,1).equals("{")){
+                            page--;
+                            showToast("没有更多了");
+                        }else {
+                            isNeedGetNewOrderListData = false;
+                            orderList.addAll(GsonUtils.jsonToArrayList(result, HistoryOrderBean.class));
+                            handler.sendEmptyMessage(ConstantsUtils.GET_HISTORY_ORDER_DATA);
+                        }
+
                     }
                 }
         );
@@ -117,7 +130,9 @@ public class PersonalFragment extends BaseFragment {
 
     @Override
     protected void fillData() {
-
+      if (isNeedGetNewOrderListData){
+          getUserOrderList();
+      }
     }
 
     @OnClick(R.id.tv_right)
@@ -151,6 +166,40 @@ public class PersonalFragment extends BaseFragment {
 
     }
 
+    public void getUserInfo() {
+
+        UserInfo user = (UserInfo) SharePreferencesUtil.readObject(context, ConstantsUtils.SP_LOGIN_USER_INFO);
+        final Map<String, String> map = new HashMap<>();
+        map.put("stId", user.getStId());
+        map.put("mobile", user.getMobile());
+        OkHttpClientManager.postAsync(ConstantsUtils.ADDRESS_URL + ConstantsUtils.GET_HISTORY_UHSER_COUNT_INFO, map, new OkHttpClientManager.DataCallBack() {
+                    @Override
+                    public void requestFailure(Request request, IOException e) {
+                        showToast("获取数据失败！");
+                    }
+
+                    @Override
+                    public void requestSuccess(String result) throws Exception {
+
+                           if (result.substring(0,1).equals("{")){
+                               Gson gson = new Gson();
+                               UserOrderInfo uoi = gson.fromJson(result,UserOrderInfo.class);
+                               Message msg = new Message();
+                               msg.obj = uoi;
+                               msg.what = ConstantsUtils.GET_HISTORY_COOUNT_DATA;
+                               handler.sendMessage(msg);
+                           }else {
+                               showToast("数据获取失败！");
+                           }
+                  
+
+                      
+
+                    }
+                }
+        );
+    }
+
 
     class PersionFragmentHandler extends Handler {
         @Override
@@ -159,6 +208,10 @@ public class PersonalFragment extends BaseFragment {
             switch (msg.what) {
                 case ConstantsUtils.GET_HISTORY_ORDER_DATA:
                     updataListView();
+                    break;    
+                case ConstantsUtils.GET_HISTORY_COOUNT_DATA:
+                    UserOrderInfo uoInfo = (UserOrderInfo) msg.obj;
+                    updataView(uoInfo);
                     break;
                 default:
                     break;
@@ -167,30 +220,53 @@ public class PersonalFragment extends BaseFragment {
         }
     }
 
+    private void updataView( UserOrderInfo uoInfo) {
+        tv_yue_order_num.setText("本月订单："+uoInfo.getMfinished()+"单      超时："+uoInfo.getMouttime()+"单");
+       tv_all_order_num.setText("所有订单："+uoInfo.getAfinished()+"单      超时："+uoInfo.getAouttime()+"单");
+    }
+
     private void updataListView() {
-        int yueOrder  = 0;
-        int all  = 0;
-        Calendar c = Calendar.getInstance();
-
-       int month = c.get(Calendar.MONTH)+1;
-
-        for (HistoryOrderBean history :orderList){
-            all++;
-            String time = history.getFinished_time().substring(5,7).replaceAll("0","");
-            if (Integer.valueOf(time)==month){
-                yueOrder++;
-            }
-
-            Log.d("","");
+        lvOrder.setMode(PullToRefreshBase.Mode.BOTH);
+//        int yueOrder  = 0;
+//        int all  = 0;
+//        int yueOrderLastTime  = 0;
+//        int allLastTime  = 0;
+//        Calendar c = Calendar.getInstance();
+//
+//       int month = c.get(Calendar.MONTH)+1;
+//
+//        for (HistoryOrderBean history :orderList){
+//            all++;
+//            String time = history.getFinished_time().substring(5,7).replaceAll("0","");
+//            if (Integer.valueOf(time)==month){
+//                yueOrder++;
+//                if (OtherUtils.date2TimeStamp(history.getFinished_time())>OtherUtils.date2TimeStamp(history.getSended_time())){
+//                    yueOrderLastTime ++;
+//                }
+//            }
+//            if (OtherUtils.date2TimeStamp(history.getFinished_time())>OtherUtils.date2TimeStamp(history.getSended_time())){
+//                allLastTime ++;
+//            }
+//            Log.d("","");
+//        }
+//        tv_yue_order_num.setText("本月订单："+yueOrder+"单      超时："+yueOrderLastTime+"单");
+//        tv_all_order_num.setText("所有订单："+all+"单      超时："+allLastTime+"单");
+        if (orderList==null){
+            orderList = new ArrayList<>();
         }
-        tv_yue_order_num.setText("本月订单："+yueOrder+"单");
-        tv_all_order_num.setText("所以订单："+all+"单");
         lvOrder.setAdapter(new CommonAdapter<HistoryOrderBean>(context, orderList, R.layout.cell_history_order) {
             @Override
             public void convert(ViewHolder helper, HistoryOrderBean item, int position) {
                 helper.setText(R.id.tv_addtime, "创单时间：" + item.getAdd_time());
                 helper.setText(R.id.tv_confirmTime, "接单时间：" + item.getConfirm_time());
                 helper.setText(R.id.tv_finishTime, "完成时间：" + item.getFinished_time());
+                helper.setText(R.id.tv_sendTime, "送达时间：" + item.getSended_time());
+                ImageView img_last_time = helper.getView(R.id.img_last_time);
+                if (OtherUtils.date2TimeStamp(item.getSended_time())<OtherUtils.date2TimeStamp(item.getFinished_time())){
+                   img_last_time.setVisibility(View.VISIBLE);
+                }else {
+                    img_last_time.setVisibility(View.GONE);
+                }
                 switch (Integer.valueOf(item.getOrder_status())) {
                     case 1:
                         helper.setText(R.id.tv_state, "进行中");
@@ -202,11 +278,20 @@ public class PersonalFragment extends BaseFragment {
 
             }
         });
-        lvOrder.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+        lvOrder.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
-            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                page = 0;
+                orderList.clear();
                 getUserOrderList();
             }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                page ++;
+                getUserOrderList();
+            }
+
         });
         lvOrder.setEmptyView(emptyView);
     }

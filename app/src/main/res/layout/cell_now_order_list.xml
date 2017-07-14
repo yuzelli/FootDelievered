@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:padding="10dp"
+    android:layout_height="90dp"
+   android:background="@color/aqua"
     >
+    <ImageView
+        android:id="@+id/img_last_time"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_last_time" />
     <ImageView
         android:id="@+id/img_icon"
         android:layout_width="70dp"
@@ -12,6 +18,7 @@
         android:layout_centerVertical="true"
         android:textSize="18sp"
         android:scaleType="fitXY"
+        android:layout_marginLeft="10dp"
         android:textColor="@color/next_color"
         />
     <TextView
@@ -32,6 +39,7 @@
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
         android:src="@mipmap/ic_right2"/>
 
 </RelativeLayout>

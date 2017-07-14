@@ -15,6 +15,7 @@ public class ConstantsUtils {
     public static final int GET_NOW_ORDER_LIST_GET_DATA = 0x00001006;
     public static final int FINISH_NOW_ORDER_LIST_GET_DATA = 0x00001007;
     public static final int GET_HISTORY_ORDER_DATA = 0x00001008;
+    public static final int GET_HISTORY_COOUNT_DATA = 0x00001009;
 
 
 
@@ -35,6 +36,7 @@ public class ConstantsUtils {
     public static final String GET_NOW_ORDER = "appapi/staff_current_order";
     public static final String FINISH_NOW_ORDER = "appapi/staff_finish_order";
     public static final String GET_HISTORY_ORDER_LIST= "appapi/staff_history_order";
+    public static final String GET_HISTORY_UHSER_COUNT_INFO= "appapi/count_info";
 
 
     //保持登录用户信息

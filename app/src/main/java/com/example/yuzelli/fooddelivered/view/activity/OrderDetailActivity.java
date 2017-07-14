@@ -19,6 +19,7 @@ import com.example.yuzelli.fooddelivered.bean.UserInfo;
 import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
 import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
 import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
+import com.example.yuzelli.fooddelivered.view.fragment.NowOrderFragment;
 import com.example.yuzelli.fooddelivered.view.fragment.OrderFragment;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -45,7 +46,8 @@ public class OrderDetailActivity extends BaseActivity {
     @BindView(R.id.tv_right)
     TextView tvRight;
     @BindView(R.id.tv_order_create_time)
-    TextView tvOrderCreateTime;
+    TextView tvOrderCreateTime;    @BindView(R.id.tv_order_send_time)
+    TextView tv_order_send_time;
     @BindView(R.id.img_order_info)
     ImageView imgOrderInfo;
     @BindView(R.id.btn_receive_order)
@@ -67,6 +69,7 @@ public class OrderDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         mOrder = (OrderBean) intent.getSerializableExtra("order");
         tvOrderCreateTime.setText("订单创建时间："+mOrder.getAdd_time());
+        tv_order_send_time.setText(mOrder.getAdd_time()+"分钟内送达");
         context = this;
         DisplayImageOptions options  = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.def2)        // 设置图片下载期间显示的图片
@@ -162,6 +165,7 @@ public class OrderDetailActivity extends BaseActivity {
             {
                 case ConstantsUtils.RECEIVE_ORDER_LIST_GET_DATA:
                     OrderFragment.needGETOrder = true;
+                    NowOrderFragment.isNeedUpDataFlag = true;
                     finish();
                     break;
                 default:

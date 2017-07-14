@@ -13,34 +13,27 @@ import java.util.ArrayList;
 
 public class OrderBean implements Serializable {
 
-    private String order_id;
-    private String order_status;
-    private String username;
-    private String mobile;
-    private String address;
-    private String img_url;
-    private String add_time;
-
-    public String getAdd_time() {
-        return add_time;
-    }
-
-    public void setAdd_time(String add_time) {
-        this.add_time = add_time;
-    }
-
-    public String getImg_url() {
-        return img_url;
-    }
-
-    public void setImg_url(String img_url) {
-        this.img_url = img_url;
-    }
-
     public static ArrayList<OrderBean> getOrderList(String jsonArray){
         return GsonUtils.jsonToArrayList(jsonArray,OrderBean.class);
 
     }
+    /**
+     * order_id : 26
+     * order_status : 0
+     * username :
+     * mobile : 13133223002
+     * img_url : http://plum-public.stor.sinaapp.com/Uploads/596834ca2e93d.png
+     * add_time : 2017-07-14 11:04:42
+     * outtime : 30
+     */
+
+    private String order_id;
+    private String order_status;
+    private String username;
+    private String mobile;
+    private String img_url;
+    private String add_time;
+    private String outtime;
 
     public String getOrder_id() {
         return order_id;
@@ -74,11 +67,27 @@ public class OrderBean implements Serializable {
         this.mobile = mobile;
     }
 
-    public String getAddress() {
-        return address;
+    public String getImg_url() {
+        return img_url;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
+    }
+
+    public String getAdd_time() {
+        return add_time;
+    }
+
+    public void setAdd_time(String add_time) {
+        this.add_time = add_time;
+    }
+
+    public String getOuttime() {
+        return outtime;
+    }
+
+    public void setOuttime(String outtime) {
+        this.outtime = outtime;
     }
 }

@@ -2,6 +2,7 @@ package com.example.yuzelli.fooddelivered.view.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
 import com.example.yuzelli.fooddelivered.utils.OtherUtils;
 import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
 import com.example.yuzelli.fooddelivered.view.fragment.NowOrderFragment;
+import com.example.yuzelli.fooddelivered.view.fragment.PersonalFragment;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -47,6 +49,10 @@ public class NowOrderDetailActivity extends BaseActivity {
     TextView tvCenter;
     @BindView(R.id.tv_right)
     TextView tvRight;
+    @BindView(R.id.tv_phone)
+    TextView tv_phone;
+    @BindView(R.id.tv_send_time)
+    TextView tv_send_time;
     @BindView(R.id.tv_count_down)
     TextView tvCountDown;
     @BindView(R.id.img_order_info)
@@ -58,8 +64,6 @@ public class NowOrderDetailActivity extends BaseActivity {
     private static int current_time;
     @BindView(R.id.ll_have_order)
     LinearLayout llHaveOrder;
-    @BindView(R.id.tv_hint)
-    TextView tvHint;
 
     private Context context;
     private NowOrderBean now;
@@ -78,11 +82,22 @@ public class NowOrderDetailActivity extends BaseActivity {
 
     @Override
     protected void binEvent() {
-        ivLeft.setVisibility(View.GONE);
-        tvCenter.setText("当前任务");
+        ivLeft.setVisibility(View.VISIBLE);
+        ivLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        tvCenter.setText("订单任务");
         tvRight.setVisibility(View.GONE);
         context = this;
         handler = new NowODHander();
+        now = (NowOrderBean) getIntent().getSerializableExtra("now");
+        if (now != null) {
+            upDataOrder(now);
+            llHaveOrder.setVisibility(View.VISIBLE);
+        }
         beginTimer();
     }
 
@@ -96,12 +111,7 @@ public class NowOrderDetailActivity extends BaseActivity {
     private boolean isFirstFlag = false;
     @Override
     protected void fillData() {
-        now = (NowOrderBean) SharePreferencesUtil.readObject(context, ConstantsUtils.SP_NOW_ORDER_INFO);
-        if (now != null) {
-            upDataOrder(now);
 
-            llHaveOrder.setVisibility(View.VISIBLE);
-        }
     }
 
     private void upDataOrder(NowOrderBean now) {
@@ -109,10 +119,11 @@ public class NowOrderDetailActivity extends BaseActivity {
 //        String mine = now.getConfirm_time().substring(15,17);
 //        String miao = now.getConfirm_time().substring(18,20);
 //        int ordercurrt = Integer.valueOf(hour)*60*60+Integer.valueOf(mine)+Integer.valueOf(miao);
-        long order_currt = OtherUtils.date2TimeStamp(now.getConfirm_time());
+        long order_currt = OtherUtils.date2TimeStamp(now.getSended_time());
         long time = System.currentTimeMillis() / 1000;
-        current_time = all_time - (int) (time - order_currt);
-        ;
+        current_time = (int)(order_currt-time);
+        tv_phone.setText(now.getMobile());
+        tv_send_time.setText(now.getSended_time());
         ImageLoader.getInstance().loadImage(now.getImg_url(),options, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
@@ -137,6 +148,12 @@ public class NowOrderDetailActivity extends BaseActivity {
             }
         });
 
+    }
+
+    public static void startAction(Context context,NowOrderBean now){
+        Intent intent = new Intent(context,NowOrderDetailActivity.class);
+        intent.putExtra("now",now);
+        context.startActivity(intent);
     }
 
 
@@ -210,9 +227,9 @@ public class NowOrderDetailActivity extends BaseActivity {
                     }
                     break;
                 case ConstantsUtils.FINISH_NOW_ORDER_LIST_GET_DATA:
-                    SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_NOW_ORDER_INFO, null);
-
-                    llHaveOrder.setVisibility(View.GONE);
+                    NowOrderFragment.isNeedUpDataFlag = true;
+                    PersonalFragment.isNeedGetNewOrderListData = true;
+                    finish();
                     break;
 
             }

@@ -2,27 +2,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp"
-   >
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/img_last_time"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_last_time" />
 
     <TextView
         android:id="@+id/tv_addtime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:textColor="@color/next_color"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_toLeftOf="@+id/tv_state"
+        android:textColor="@color/next_color"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tv_confirmTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/tv_state"
         android:layout_alignParentLeft="true"
-        android:textColor="@color/next_color"
         android:layout_below="@+id/tv_addtime"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/tv_state"
+        android:textColor="@color/next_color"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_sendTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_confirmTime"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/tv_state"
+        android:textColor="@color/next_color"
         android:textSize="18sp" />
 
     <TextView
@@ -30,9 +49,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_sendTime"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@+id/tv_state"
         android:textColor="@color/next_color"
-        android:layout_below="@+id/tv_confirmTime"
         android:textSize="18sp" />
 
     <TextView
@@ -40,10 +61,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="10dp"
         android:padding="3dp"
-        android:textColor="@color/next_color"
         android:text="已完成"
-        android:textSize="18sp"
-        android:layout_centerVertical="true"/>
+        android:textColor="@color/next_color"
+        android:textSize="18sp" />
 
 </RelativeLayout>

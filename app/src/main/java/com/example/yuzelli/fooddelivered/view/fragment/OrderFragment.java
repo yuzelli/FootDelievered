@@ -30,6 +30,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import org.json.JSONArray;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -101,6 +102,11 @@ public class OrderFragment extends BaseFragment {
 
                         String first = result.substring(0, 1);
                         if (first.equals("{")) {
+                            if (orderListDatas!=null){
+                                orderListDatas.clear();
+                            }
+
+                            updataListView();
                             return;
                         } else {
                             if (result.equals(lastResult)){
@@ -156,6 +162,9 @@ public class OrderFragment extends BaseFragment {
 
     private void updataListView() {
         lvOrder.setEmptyView(emptyView);
+        if (  orderListDatas==null){
+            orderListDatas = new ArrayList<>();
+        }
         lvOrder.setAdapter(new CommonAdapter<OrderBean>(context,orderListDatas,R.layout.cell_order_item) {
             @Override
             public void convert(ViewHolder helper, OrderBean item, int position) {
@@ -169,6 +178,7 @@ public class OrderFragment extends BaseFragment {
                 OrderDetailActivity.actionStart(context, orderListDatas.get(position-1));
             }
         });
+
         lvOrder.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
