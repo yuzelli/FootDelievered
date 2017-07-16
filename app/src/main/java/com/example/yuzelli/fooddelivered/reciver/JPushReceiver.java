@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
+import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
 import com.example.yuzelli.fooddelivered.view.activity.MainActivity;
 
 import org.json.JSONException;
@@ -48,7 +50,9 @@ public class JPushReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, MainActivity.class);
             i.putExtras(bundle);
             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_TOAST_USER_INFO,null);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED );
+
             context.startActivity(i);
 
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {

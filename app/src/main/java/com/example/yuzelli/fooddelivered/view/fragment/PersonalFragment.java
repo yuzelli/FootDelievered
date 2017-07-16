@@ -221,8 +221,8 @@ public class PersonalFragment extends BaseFragment {
     }
 
     private void updataView( UserOrderInfo uoInfo) {
-        tv_yue_order_num.setText("本月订单："+uoInfo.getMfinished()+"单      超时："+uoInfo.getMouttime()+"单");
-       tv_all_order_num.setText("所有订单："+uoInfo.getAfinished()+"单      超时："+uoInfo.getAouttime()+"单");
+        tv_yue_order_num.setText("本月订单："+uoInfo.getMall()+"单      超时："+uoInfo.getMouttime()+"单");
+       tv_all_order_num.setText("所有订单："+uoInfo.getAorder()+"单      超时："+uoInfo.getAouttime()+"单");
     }
 
     private void updataListView() {

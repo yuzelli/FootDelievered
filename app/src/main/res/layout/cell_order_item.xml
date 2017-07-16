@@ -33,7 +33,6 @@
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-
         android:src="@mipmap/ic_right2" />
 
 </RelativeLayout>

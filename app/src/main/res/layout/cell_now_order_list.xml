@@ -4,12 +4,7 @@
     android:layout_height="90dp"
    android:background="@color/aqua"
     >
-    <ImageView
-        android:id="@+id/img_last_time"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/img_last_time" />
+
     <ImageView
         android:id="@+id/img_icon"
         android:layout_width="70dp"
@@ -41,5 +36,10 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:src="@mipmap/ic_right2"/>
-
+    <ImageView
+        android:id="@+id/img_last_time"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_last_time" />
 </RelativeLayout>

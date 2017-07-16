@@ -42,6 +42,7 @@ public class ConstantsUtils {
     //保持登录用户信息
     public static final String SP_LOGIN_USER_INFO = "UserInfo";
     public static final String SP_NOW_ORDER_INFO = "NOW_ORDER";
+    public static final String SP_TOAST_USER_INFO = "TOAST_USER_INFO";
 
 
 }

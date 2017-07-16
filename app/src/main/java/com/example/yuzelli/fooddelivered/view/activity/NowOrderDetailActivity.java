@@ -115,10 +115,7 @@ public class NowOrderDetailActivity extends BaseActivity {
     }
 
     private void upDataOrder(NowOrderBean now) {
-//        String hour = now.getConfirm_time().substring(14,16);
-//        String mine = now.getConfirm_time().substring(15,17);
-//        String miao = now.getConfirm_time().substring(18,20);
-//        int ordercurrt = Integer.valueOf(hour)*60*60+Integer.valueOf(mine)+Integer.valueOf(miao);
+
         long order_currt = OtherUtils.date2TimeStamp(now.getSended_time());
         long time = System.currentTimeMillis() / 1000;
         current_time = (int)(order_currt-time);
