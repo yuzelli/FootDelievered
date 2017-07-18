@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -106,7 +107,7 @@ public class LoginActivity extends BaseActivity {
      * code =201表示电话号码不对，code =202表示密码错误，code =203表示未知错误，
      */
     private void doLoginAction(String mobile, String password) {
-        HashMap<String, String> map = new HashMap<>();
+        final HashMap<String, String> map = new HashMap<>();
         map.put("mobile", mobile);
         map.put("password", password);
         OkHttpClientManager.postAsync(ConstantsUtils.ADDRESS_URL + ConstantsUtils.USER_LOGIN, map, new OkHttpClientManager.DataCallBack() {
@@ -122,7 +123,11 @@ public class LoginActivity extends BaseActivity {
                 if (code == 200) {
                     showToast("登录成功！");
                     Message msg = new Message();
-                    msg.obj = json.optString("stId");
+                    Map<String,String> uMap = new HashMap<String, String>();
+                    uMap.put("stId",json.optString("stId"));
+                    uMap.put("stName",json.optString("stName"));
+                    msg.obj = uMap;
+
                     msg.what = ConstantsUtils.LOGIN_GET_DATA;
                     handler.sendMessage(msg);
                 } else if (code == 201) {
@@ -165,8 +170,10 @@ public class LoginActivity extends BaseActivity {
                 case ConstantsUtils.LOGIN_GET_DATA:
                     String mobile = userPhone.getText().toString().trim();
                     String password = etPassword.getText().toString().trim();
-                    String stId = (String) msg.obj;
-                    SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_LOGIN_USER_INFO, new UserInfo(mobile, password,stId));
+                    Map<String,String> uMap = (Map<String, String>) msg.obj;
+                    String stId = uMap.get("stId");
+                    String userName = uMap.get("stName");
+                    SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_LOGIN_USER_INFO, new UserInfo(mobile, password,stId,userName));
                     MainActivity.actionStart(context);
                     JPushInterface.setAlias(context, stId, new TagAliasCallback() {
                         @Override

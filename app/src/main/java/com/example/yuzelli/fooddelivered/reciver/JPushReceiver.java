@@ -9,6 +9,8 @@ import android.util.Log;
 import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
 import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
 import com.example.yuzelli.fooddelivered.view.activity.MainActivity;
+import com.example.yuzelli.fooddelivered.view.fragment.NowOrderFragment;
+import com.example.yuzelli.fooddelivered.view.fragment.OrderFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +43,15 @@ public class JPushReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
+         //   String content = bundle.getString(JPushInterface.)
+            String message = bundle.getString(JPushInterface.EXTRA_ALERT);
+            Log.d(TAG, "message : " + message);
+            if (message.equals("您有新的订单了，请及时查收")){
+                NowOrderFragment.isNeedUpDataFlag = true;
+                OrderFragment.needGETOrder = true;
+            }
+            SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_TOAST_USER_INFO,message);
+            NowOrderFragment.showNotail();
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
@@ -50,7 +61,7 @@ public class JPushReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, MainActivity.class);
             i.putExtras(bundle);
             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_TOAST_USER_INFO,null);
+
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED );
 
             context.startActivity(i);

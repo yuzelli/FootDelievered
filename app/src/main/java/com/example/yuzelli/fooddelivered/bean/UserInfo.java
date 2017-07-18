@@ -10,11 +10,21 @@ public class UserInfo implements Serializable {
     private String mobile;
     private String password;
     private String stId;
+    private String userName;
 
-    public UserInfo(String mobile, String password,String stId) {
+    public UserInfo(String mobile, String password,String stId,String userName) {
         this.mobile = mobile;
         this.password = password;
         this.stId = stId;
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getStId() {

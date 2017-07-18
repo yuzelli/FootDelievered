@@ -1,9 +1,12 @@
 package com.example.yuzelli.fooddelivered.view.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +61,8 @@ public class NowOrderFragment extends BaseFragment {
     @BindView(R.id.lv_order)
     PullToRefreshListView lvOrder;
 
-    private Context context;
+    private static Context context;
+    private static NowOrderFragment mfragment;
     private List<NowOrderBean> nowList;
     private NowOrderFragmentHandler handler;
     public static boolean isNeedUpDataFlag = false;
@@ -78,7 +82,7 @@ public class NowOrderFragment extends BaseFragment {
     @Override
     protected void bindEvent(View v) {
         ivLeft.setVisibility(View.GONE);
-
+        mfragment = this;
         tvCenter.setText("当前任务列表");
         tvRight.setVisibility(View.GONE);
         context = getActivity();
@@ -91,11 +95,39 @@ public class NowOrderFragment extends BaseFragment {
         if (isNeedUpDataFlag) {
             getNowOrder();
         }
-
-
+        showNotail();
     }
 
-    private void getNowOrder() {
+
+
+    /**
+     * 显示通知
+     */
+    public static void showNotail() {
+        if (context==null){
+            return;
+        }
+        final String message = (String) SharePreferencesUtil.readObject(context, ConstantsUtils.SP_TOAST_USER_INFO);
+        if (message!=null&&!message.equals("")){
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);// 构建
+
+            builder.setTitle("通知");
+            builder.setMessage(message);
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (mfragment!=null){
+                        mfragment.getNowOrder();
+                    }
+                    SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_TOAST_USER_INFO,null);
+                }
+            });
+            builder.show();
+            SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_TOAST_USER_INFO,null);
+        }
+    }
+
+    public void getNowOrder() {
         UserInfo user = (UserInfo) SharePreferencesUtil.readObject(context, ConstantsUtils.SP_LOGIN_USER_INFO);
         Map<String, String> map = new HashMap<>();
         map.put("stId", user.getStId());
@@ -116,7 +148,7 @@ public class NowOrderFragment extends BaseFragment {
 //                            SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_NOW_ORDER_INFO, nowList);
                             handler.sendEmptyMessage(ConstantsUtils.GET_NOW_ORDER_LIST_GET_DATA);
                         } else {
-                            if (nowList!=null){
+                            if (nowList != null) {
                                 nowList.clear();
                             }
 
@@ -145,20 +177,34 @@ public class NowOrderFragment extends BaseFragment {
     }
 
     private void upDataOrder() {
-        if (nowList==null){
+        if (nowList == null) {
             nowList = new ArrayList<>();
         }
-        final long currtime = System.currentTimeMillis()/1000;
+        final long currtime = System.currentTimeMillis() / 1000;
         lvOrder.setAdapter(new CommonAdapter<NowOrderBean>(context, nowList, R.layout.cell_now_order_list) {
             @Override
             public void convert(ViewHolder helper, NowOrderBean item, int position) {
                 helper.setImageByUrl(R.id.img_icon, item.getImg_url());
                 helper.setText(R.id.tv_orderTimes, "送达时间：" + item.getSended_time());
                 ImageView img_last_time = helper.getView(R.id.img_last_time);
-                if (OtherUtils.date2TimeStamp(item.getSended_time())<currtime){
+                if (OtherUtils.date2TimeStamp(item.getSended_time()) < currtime) {
                     img_last_time.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     img_last_time.setVisibility(View.GONE);
+                }
+
+                if (item.getOrder_type()!=null){
+                    if (item.getOrder_type().equals("1")){
+                        helper.setText(R.id.tv_order_where,"美团");
+                    }else if (item.getOrder_type().equals("2")){
+                        helper.setText(R.id.tv_order_where,"饿了么");
+                    }else if (item.getOrder_type().equals("3")){
+                        helper.setText(R.id.tv_order_where,"百度外卖");
+                    }else if (item.getOrder_type().equals("4")){
+                        helper.setText(R.id.tv_order_where,"口碑");
+                    }
+                }else {
+                    helper.setText(R.id.tv_order_where,"");
                 }
             }
         });

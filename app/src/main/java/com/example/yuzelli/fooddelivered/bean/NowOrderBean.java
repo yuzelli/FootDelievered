@@ -36,6 +36,15 @@ public class NowOrderBean implements Serializable {
     private String confirm_time;
     private String outtime;
     private String sended_time;
+    private String order_type;
+
+    public String getOrder_type() {
+        return order_type;
+    }
+
+    public void setOrder_type(String order_type) {
+        this.order_type = order_type;
+    }
 
     public String getOrder_id() {
         return order_id;

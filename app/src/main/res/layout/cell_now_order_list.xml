@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="90dp"
-   android:background="@color/aqua"
+
     >
 
     <ImageView
@@ -18,16 +18,27 @@
         />
     <TextView
         android:id="@+id/tv_orderTimes"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:textColor="@color/next_color"
-        android:layout_toLeftOf="@+id/img"
         android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/tv_order_where"
         android:layout_toRightOf="@+id/img_icon"
+        android:gravity="center"
         android:lines="2"
-        />
+        android:text="2017-12-24 12:12"
+        android:textColor="@color/next_color"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/tv_order_where"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/img"
+        android:gravity="center"
+        android:text="百度外买"
+        android:layout_margin="10dp"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
     <ImageView
         android:id="@+id/img"
         android:layout_width="30dp"

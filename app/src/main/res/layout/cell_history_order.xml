@@ -49,6 +49,17 @@
         android:layout_toLeftOf="@+id/tv_state"
         android:textColor="@color/next_color"
         android:textSize="18sp" />
+    <TextView
+        android:id="@+id/tv_order_where"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_finishTime"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/tv_state"
+        android:textColor="@color/next_color"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tv_state"

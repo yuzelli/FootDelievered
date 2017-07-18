@@ -41,6 +41,8 @@ public class RegisterActivity extends BaseActivity {
     EditText userPhone;
     @BindView(R.id.et_password)
     EditText etPassword;
+    @BindView(R.id.user_name)
+    EditText username;
     @BindView(R.id.et_confirm_password)
     EditText etConfirmPassword;
     @BindView(R.id.bt_register)
@@ -83,17 +85,20 @@ public class RegisterActivity extends BaseActivity {
                 String mobile = userPhone.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
                 String confirmPassword = etConfirmPassword.getText().toString().trim();
-                if (verification(mobile, password,confirmPassword)) {
-                    doRegisterAction(mobile, password);
+                String un = username.getText().toString().trim();
+                if (verification(mobile, password, confirmPassword,un)) {
+                    doRegisterAction(mobile, password,un);
                 }
                 break;
         }
     }
+
     //101：注册成功；102注册失败；103密码或者电话号码为空；104已注册过了
-    private void doRegisterAction(String mobile, String password) {
+    private void doRegisterAction(String mobile, String password,String username) {
         HashMap<String, String> map = new HashMap<>();
         map.put("mobile", mobile);
         map.put("password", password);
+        map.put("stName", username);
         OkHttpClientManager.postAsync(ConstantsUtils.ADDRESS_URL + ConstantsUtils.REGISTER_USER, map, new OkHttpClientManager.DataCallBack() {
             @Override
             public void requestFailure(Request request, IOException e) {
@@ -111,9 +116,9 @@ public class RegisterActivity extends BaseActivity {
                     showToast("注册失败！");
                 } else if (code == 103) {
                     showToast("密码或者电话号码为空！");
-                }else if (code == 104){
+                } else if (code == 104) {
                     showToast("已注册过了！");
-                }else {
+                } else {
                     showToast("数据获取失败！");
                 }
             }
@@ -121,8 +126,12 @@ public class RegisterActivity extends BaseActivity {
 
     }
 
-    private boolean verification(String mobile, String password, String confirmPassword) {
+    private boolean verification(String mobile, String password, String confirmPassword,String u_n) {
         boolean flag = true;
+        if (u_n.equals("")) {
+            showToast("请输入用户名！");
+            flag = false;
+        }
         if (mobile.equals("")) {
             showToast("请输入手机号！");
             flag = false;
@@ -130,16 +139,18 @@ public class RegisterActivity extends BaseActivity {
         if (password.equals("")) {
             showToast("请输入密码！");
             flag = false;
-        } if (confirmPassword.equals("")) {
+        }
+        if (confirmPassword.equals("")) {
             showToast("请再次输入密码！");
             flag = false;
         }
 
-        if (!OtherUtils.isPhoneEnable(mobile)){
+
+        if (!OtherUtils.isPhoneEnable(mobile)) {
             showToast("输入手机号有误！");
             flag = false;
         }
-        if (!password.equals(confirmPassword)){
+        if (!password.equals(confirmPassword)) {
             showToast("两次输入密码不一致！");
             flag = false;
         }
@@ -147,11 +158,11 @@ public class RegisterActivity extends BaseActivity {
         return flag;
     }
 
-    class RegisterHandler extends Handler{
+    class RegisterHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case ConstantsUtils.REGISTER_GET_DATA:
                     finish();
                     break;

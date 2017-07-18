@@ -170,6 +170,20 @@ public class OrderFragment extends BaseFragment {
             public void convert(ViewHolder helper, OrderBean item, int position) {
                 helper.setImageByUrl(R.id.img_icon,item.getImg_url());
                 helper.setText(R.id.tv_orderTimes,item.getAdd_time());
+                if (item.getOrder_type()!=null){
+                    if (item.getOrder_type().equals("1")){
+                        helper.setText(R.id.tv_order_where,"美团");
+                    }else if (item.getOrder_type().equals("2")){
+                        helper.setText(R.id.tv_order_where,"饿了么");
+                    }else if (item.getOrder_type().equals("3")){
+                        helper.setText(R.id.tv_order_where,"百度外卖");
+                    }else if (item.getOrder_type().equals("4")){
+                        helper.setText(R.id.tv_order_where,"口碑");
+                    }
+                }else {
+                    helper.setText(R.id.tv_order_where,"");
+                }
+
             }
         });
         lvOrder.setOnItemClickListener(new AdapterView.OnItemClickListener() {

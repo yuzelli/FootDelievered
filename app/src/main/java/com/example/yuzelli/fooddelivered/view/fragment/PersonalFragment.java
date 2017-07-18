@@ -133,6 +133,7 @@ public class PersonalFragment extends BaseFragment {
       if (isNeedGetNewOrderListData){
           getUserOrderList();
       }
+        getUserInfo();
     }
 
     @OnClick(R.id.tv_right)
@@ -227,30 +228,7 @@ public class PersonalFragment extends BaseFragment {
 
     private void updataListView() {
         lvOrder.setMode(PullToRefreshBase.Mode.BOTH);
-//        int yueOrder  = 0;
-//        int all  = 0;
-//        int yueOrderLastTime  = 0;
-//        int allLastTime  = 0;
-//        Calendar c = Calendar.getInstance();
-//
-//       int month = c.get(Calendar.MONTH)+1;
-//
-//        for (HistoryOrderBean history :orderList){
-//            all++;
-//            String time = history.getFinished_time().substring(5,7).replaceAll("0","");
-//            if (Integer.valueOf(time)==month){
-//                yueOrder++;
-//                if (OtherUtils.date2TimeStamp(history.getFinished_time())>OtherUtils.date2TimeStamp(history.getSended_time())){
-//                    yueOrderLastTime ++;
-//                }
-//            }
-//            if (OtherUtils.date2TimeStamp(history.getFinished_time())>OtherUtils.date2TimeStamp(history.getSended_time())){
-//                allLastTime ++;
-//            }
-//            Log.d("","");
-//        }
-//        tv_yue_order_num.setText("本月订单："+yueOrder+"单      超时："+yueOrderLastTime+"单");
-//        tv_all_order_num.setText("所有订单："+all+"单      超时："+allLastTime+"单");
+
         if (orderList==null){
             orderList = new ArrayList<>();
         }
@@ -262,18 +240,34 @@ public class PersonalFragment extends BaseFragment {
                 helper.setText(R.id.tv_finishTime, "完成时间：" + item.getFinished_time());
                 helper.setText(R.id.tv_sendTime, "送达时间：" + item.getSended_time());
                 ImageView img_last_time = helper.getView(R.id.img_last_time);
-                if (OtherUtils.date2TimeStamp(item.getSended_time())<OtherUtils.date2TimeStamp(item.getFinished_time())){
-                   img_last_time.setVisibility(View.VISIBLE);
-                }else {
-                    img_last_time.setVisibility(View.GONE);
-                }
+
                 switch (Integer.valueOf(item.getOrder_status())) {
                     case 1:
                         helper.setText(R.id.tv_state, "进行中");
+                        img_last_time.setVisibility(View.GONE);
                         break;
                     case 2:
                         helper.setText(R.id.tv_state, "已完成");
+                        img_last_time.setVisibility(View.GONE);
                         break;
+                    case 3:
+                        helper.setText(R.id.tv_state, "超时");
+                        img_last_time.setVisibility(View.VISIBLE);
+                        break;
+                }
+
+                if (item.getOrder_type()!=null){
+                    if (item.getOrder_type().equals("1")){
+                        helper.setText(R.id.tv_order_where,"订单平台：美团");
+                    }else if (item.getOrder_type().equals("2")){
+                        helper.setText(R.id.tv_order_where,"订单平台：饿了么");
+                    }else if (item.getOrder_type().equals("3")){
+                        helper.setText(R.id.tv_order_where,"订单平台：百度外卖");
+                    }else if (item.getOrder_type().equals("4")){
+                        helper.setText(R.id.tv_order_where,"订单平台：口碑");
+                    }
+                }else {
+                    helper.setText(R.id.tv_order_where,"");
                 }
 
             }
