@@ -22,6 +22,7 @@ import com.example.yuzelli.fooddelivered.bean.OrderBean;
 import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
 import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
 import com.example.yuzelli.fooddelivered.utils.CommonAdapter;
+import com.example.yuzelli.fooddelivered.utils.OtherUtils;
 import com.example.yuzelli.fooddelivered.utils.ViewHolder;
 import com.example.yuzelli.fooddelivered.view.activity.OrderDetailActivity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -117,6 +118,7 @@ public class OrderFragment extends BaseFragment {
                             lastResult = result;
                             orderListDatas = OrderBean.getOrderList(result);
                             handler.sendEmptyMessage(ConstantsUtils.NEW_ORDER_LIST_GET_DATA);
+
                         }
                     }
                 }
@@ -151,8 +153,9 @@ public class OrderFragment extends BaseFragment {
                 case ConstantsUtils.SENG_GET_ORDER_MESSAGE:
                     doGetOrderList();
                     Message message = handler.obtainMessage(ConstantsUtils.SENG_GET_ORDER_MESSAGE);
-                    handler.sendMessageDelayed(message, 5*1000);
+                    handler.sendMessageDelayed(message, 30*1000);
                     break;
+
                 default:
                     break;
             }
@@ -165,11 +168,13 @@ public class OrderFragment extends BaseFragment {
         if (  orderListDatas==null){
             orderListDatas = new ArrayList<>();
         }
-        lvOrder.setAdapter(new CommonAdapter<OrderBean>(context,orderListDatas,R.layout.cell_order_item) {
+        CommonAdapter<OrderBean> adapter = new CommonAdapter<OrderBean>(context,orderListDatas,R.layout.cell_now_order_list) {
             @Override
             public void convert(ViewHolder helper, OrderBean item, int position) {
                 helper.setImageByUrl(R.id.img_icon,item.getImg_url());
-                helper.setText(R.id.tv_orderTimes,item.getAdd_time());
+                long a  = OtherUtils.date2TimeStamp(item.getAdd_time())+Integer.valueOf(item.getOuttime());
+                helper.setText(R.id.tv_orderTimes,"送达时间："+OtherUtils.stampToDate(a+""));
+                helper.setText(R.id.tv_order_sn,"订单号："+item.getOrder_sn());
                 if (item.getOrder_type()!=null){
                     if (item.getOrder_type().equals("1")){
                         helper.setText(R.id.tv_order_where,"美团");
@@ -183,15 +188,18 @@ public class OrderFragment extends BaseFragment {
                 }else {
                     helper.setText(R.id.tv_order_where,"");
                 }
-
             }
-        });
+        };
+        lvOrder.setAdapter(adapter);
+
         lvOrder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 OrderDetailActivity.actionStart(context, orderListDatas.get(position-1));
             }
         });
+
+
 
         lvOrder.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
@@ -201,6 +209,13 @@ public class OrderFragment extends BaseFragment {
 
             }
         });
-    }
 
+
+    }
+    private String setShowCountDownText(int time) {
+        StringBuffer buffer = new StringBuffer();
+        int feng = time / 60;
+        int min = time % 60;
+        return buffer.append(feng + "分").append(min + "秒").toString();
+    }
 }

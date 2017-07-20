@@ -1,6 +1,7 @@
 package com.example.yuzelli.fooddelivered.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +30,6 @@ public class OtherUtils {
 
     /**
      * 日期格式字符串转换成时间戳
-     * @param format 如：
      * @return
      */
     public static long date2TimeStamp(String date_str){
@@ -41,6 +41,16 @@ public class OtherUtils {
         }
         return 0;
     }
-
+    /*
+       * 将时间戳转换为时间
+       */
+    public static String stampToDate(String s){
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long lt = new Long(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
 
 }

@@ -185,6 +185,7 @@ public class NowOrderFragment extends BaseFragment {
             @Override
             public void convert(ViewHolder helper, NowOrderBean item, int position) {
                 helper.setImageByUrl(R.id.img_icon, item.getImg_url());
+                helper.setText(R.id.tv_order_sn ,"订单号："+item.getOrder_sn());
                 helper.setText(R.id.tv_orderTimes, "送达时间：" + item.getSended_time());
                 ImageView img_last_time = helper.getView(R.id.img_last_time);
                 if (OtherUtils.date2TimeStamp(item.getSended_time()) < currtime) {

@@ -29,7 +29,7 @@ public class JPushReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
-      //  String regId = JPushInterface.getRegistrationID(context);
+        //  String regId = JPushInterface.getRegistrationID(context);
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
             Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
@@ -43,14 +43,14 @@ public class JPushReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-         //   String content = bundle.getString(JPushInterface.)
+            //   String content = bundle.getString(JPushInterface.)
             String message = bundle.getString(JPushInterface.EXTRA_ALERT);
             Log.d(TAG, "message : " + message);
-            if (message.equals("您有新的订单了，请及时查收")){
-                NowOrderFragment.isNeedUpDataFlag = true;
-                OrderFragment.needGETOrder = true;
-            }
-            SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_TOAST_USER_INFO,message);
+
+            NowOrderFragment.isNeedUpDataFlag = true;
+            OrderFragment.needGETOrder = true;
+
+            SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_TOAST_USER_INFO, message);
             NowOrderFragment.showNotail();
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 
@@ -62,7 +62,7 @@ public class JPushReceiver extends BroadcastReceiver {
             i.putExtras(bundle);
             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED );
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
             context.startActivity(i);
 
@@ -70,9 +70,9 @@ public class JPushReceiver extends BroadcastReceiver {
             Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
             //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
 
-        } else if(JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
+        } else if (JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
             boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
-            Log.w(TAG, "[MyReceiver]" + intent.getAction() +" connected state change to "+connected);
+            Log.w(TAG, "[MyReceiver]" + intent.getAction() + " connected state change to " + connected);
         } else {
             Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
         }
@@ -84,7 +84,7 @@ public class JPushReceiver extends BroadcastReceiver {
         for (String key : bundle.keySet()) {
             if (key.equals(JPushInterface.EXTRA_NOTIFICATION_ID)) {
                 sb.append("\nkey:" + key + ", value:" + bundle.getInt(key));
-            }else if(key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)){
+            } else if (key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)) {
                 sb.append("\nkey:" + key + ", value:" + bundle.getBoolean(key));
             } else if (key.equals(JPushInterface.EXTRA_EXTRA)) {
                 if (bundle.getString(JPushInterface.EXTRA_EXTRA).isEmpty()) {
@@ -94,12 +94,12 @@ public class JPushReceiver extends BroadcastReceiver {
 
                 try {
                     JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-                    Iterator<String> it =  json.keys();
+                    Iterator<String> it = json.keys();
 
                     while (it.hasNext()) {
                         String myKey = it.next().toString();
                         sb.append("\nkey:" + key + ", value: [" +
-                                myKey + " - " +json.optString(myKey) + "]");
+                                myKey + " - " + json.optString(myKey) + "]");
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "Get message extra JSON error!");

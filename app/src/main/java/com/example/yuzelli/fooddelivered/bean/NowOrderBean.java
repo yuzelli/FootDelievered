@@ -23,7 +23,7 @@ public class NowOrderBean implements Serializable {
      * outtime : 0
      * sended_time : 2017-07-10 07:56:23
      */
-
+    private String order_sn;
     private String order_id;
     private String order_status;
     private String stId;
@@ -37,6 +37,14 @@ public class NowOrderBean implements Serializable {
     private String outtime;
     private String sended_time;
     private String order_type;
+
+    public String getOrder_sn() {
+        return order_sn;
+    }
+
+    public void setOrder_sn(String order_sn) {
+        this.order_sn = order_sn;
+    }
 
     public String getOrder_type() {
         return order_type;
