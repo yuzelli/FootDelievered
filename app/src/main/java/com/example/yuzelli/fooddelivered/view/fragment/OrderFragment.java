@@ -86,7 +86,7 @@ public class OrderFragment extends BaseFragment {
         soundPool.load(context,R.raw.test,1);
 
         Message message = handler.obtainMessage(ConstantsUtils.SENG_GET_ORDER_MESSAGE);     // Message
-        handler.sendMessageDelayed(message, 30*1000);
+        handler.sendMessageDelayed(message, 60*1000);
     }
     private void doGetOrderList() {
 
@@ -110,12 +110,12 @@ public class OrderFragment extends BaseFragment {
                             updataListView();
                             return;
                         } else {
-                            if (result.equals(lastResult)){
+                            if (!result.equals(lastResult)){
+                                showHintSound();
+                                lastResult = result;
 
-                                return;
                             }
-                            showHintSound();
-                            lastResult = result;
+
                             orderListDatas = OrderBean.getOrderList(result);
                             handler.sendEmptyMessage(ConstantsUtils.NEW_ORDER_LIST_GET_DATA);
 
@@ -153,7 +153,7 @@ public class OrderFragment extends BaseFragment {
                 case ConstantsUtils.SENG_GET_ORDER_MESSAGE:
                     doGetOrderList();
                     Message message = handler.obtainMessage(ConstantsUtils.SENG_GET_ORDER_MESSAGE);
-                    handler.sendMessageDelayed(message, 30*1000);
+                    handler.sendMessageDelayed(message, 60*1000);
                     break;
 
                 default:
@@ -172,8 +172,12 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void convert(ViewHolder helper, OrderBean item, int position) {
                 helper.setImageByUrl(R.id.img_icon,item.getImg_url());
-                long a  = OtherUtils.date2TimeStamp(item.getAdd_time())+Integer.valueOf(item.getOuttime());
-                helper.setText(R.id.tv_orderTimes,"送达时间："+OtherUtils.stampToDate(a+""));
+                long a  = OtherUtils.date2TimeStamp(item.getAdd_time())+Integer.valueOf(item.getOuttime())*60-System.currentTimeMillis()/1000;
+                if (a>0){
+                    helper.setText(R.id.tv_orderTimes,"倒计时："+OtherUtils.setShowCountDownText2((int)a));
+                }else {
+                    helper.setText(R.id.tv_orderTimes,"超时："+OtherUtils.setShowCountDownText2(-(int)a));
+                }
                 helper.setText(R.id.tv_order_sn,"订单号："+item.getOrder_sn());
                 if (item.getOrder_type()!=null){
                     if (item.getOrder_type().equals("1")){
@@ -211,11 +215,5 @@ public class OrderFragment extends BaseFragment {
         });
 
 
-    }
-    private String setShowCountDownText(int time) {
-        StringBuffer buffer = new StringBuffer();
-        int feng = time / 60;
-        int min = time % 60;
-        return buffer.append(feng + "分").append(min + "秒").toString();
     }
 }

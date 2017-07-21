@@ -23,6 +23,7 @@ public class ConstantsUtils {
     //发送倒计时
     public static final int SENG_COUNT_DOWN_MESSAGE = 0x00002001;
     public static final int SENG_GET_ORDER_MESSAGE = 0x00002002;
+    public static final int SENG_GET_NOW_ORDER_MESSAGE = 0x00002003;
 
 
 

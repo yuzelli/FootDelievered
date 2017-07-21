@@ -229,13 +229,13 @@ public class NowOrderDetailActivity extends BaseActivity {
                     if (tvCountDown == null) {
                         return;
                     }
-                    tvCountDown.setText("倒计时：" + setShowCountDownText(current_time));
+                    tvCountDown.setText("倒计时：" + OtherUtils.setShowCountDownText(current_time));
 
                     if (current_time > 0) {
                         Message message = handler.obtainMessage(ConstantsUtils.SENG_COUNT_DOWN_MESSAGE);
                         handler.sendMessageDelayed(message, 1000);      // send message
                     } else {
-                        tvCountDown.setText("订单超时：" + setShowCountDownText(-current_time));
+                        tvCountDown.setText("订单超时：" + OtherUtils.setShowCountDownText(-current_time));
                         Message message = handler.obtainMessage(ConstantsUtils.SENG_COUNT_DOWN_MESSAGE);
                         handler.sendMessageDelayed(message, 1000);
                     }
@@ -250,11 +250,6 @@ public class NowOrderDetailActivity extends BaseActivity {
         }
     }
 
-    private String setShowCountDownText(int time) {
-        StringBuffer buffer = new StringBuffer();
-        int feng = time / 60;
-        int min = time % 60;
-        return buffer.append(feng + "分").append(min + "秒").toString();
-    }
+
 
 }

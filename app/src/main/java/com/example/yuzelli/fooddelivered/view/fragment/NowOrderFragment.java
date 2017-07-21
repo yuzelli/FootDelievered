@@ -88,6 +88,9 @@ public class NowOrderFragment extends BaseFragment {
         context = getActivity();
         handler = new NowOrderFragmentHandler();
         getNowOrder();
+
+        Message message = handler.obtainMessage(ConstantsUtils.SENG_GET_NOW_ORDER_MESSAGE);     // Message
+        handler.sendMessageDelayed(message, 60*1000);
     }
 
     @Override
@@ -171,7 +174,13 @@ public class NowOrderFragment extends BaseFragment {
                     isNeedUpDataFlag = false;
                     upDataOrder();
                     break;
-
+                case ConstantsUtils.SENG_GET_NOW_ORDER_MESSAGE:
+                    getNowOrder();
+                    Message message = handler.obtainMessage(ConstantsUtils.SENG_GET_NOW_ORDER_MESSAGE);
+                    handler.sendMessageDelayed(message, 60*1000);
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -186,7 +195,12 @@ public class NowOrderFragment extends BaseFragment {
             public void convert(ViewHolder helper, NowOrderBean item, int position) {
                 helper.setImageByUrl(R.id.img_icon, item.getImg_url());
                 helper.setText(R.id.tv_order_sn ,"订单号："+item.getOrder_sn());
-                helper.setText(R.id.tv_orderTimes, "送达时间：" + item.getSended_time());
+                long a = OtherUtils.date2TimeStamp(item.getSended_time())-currtime;
+                if (a>0){
+                    helper.setText(R.id.tv_orderTimes,"倒计时："+OtherUtils.setShowCountDownText2((int)a));
+                }else {
+                    helper.setText(R.id.tv_orderTimes,"超时："+OtherUtils.setShowCountDownText2(-(int)a));
+                }
                 ImageView img_last_time = helper.getView(R.id.img_last_time);
                 if (OtherUtils.date2TimeStamp(item.getSended_time()) < currtime) {
                     img_last_time.setVisibility(View.VISIBLE);

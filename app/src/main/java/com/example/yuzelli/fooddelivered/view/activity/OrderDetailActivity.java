@@ -69,7 +69,7 @@ public class OrderDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         mOrder = (OrderBean) intent.getSerializableExtra("order");
         tvOrderCreateTime.setText("订单创建时间："+mOrder.getAdd_time());
-        tv_order_send_time.setText(mOrder.getAdd_time()+"分钟内送达");
+        tv_order_send_time.setText(mOrder.getOuttime()+"分钟内送达");
         context = this;
         DisplayImageOptions options  = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.def2)        // 设置图片下载期间显示的图片

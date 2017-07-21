@@ -53,4 +53,29 @@ public class OtherUtils {
         return res;
     }
 
+    public static String setShowCountDownText(int time) {
+        StringBuffer buffer = new StringBuffer();
+        int hour = 0;
+        int feng = time / 60;
+        int min = time % 60;
+        if (feng>=60){
+            hour = feng/60;
+            feng = feng-hour*60;
+            return buffer.append(hour + "小时").append(feng + "分").append(min + "秒").toString();
+        }
+        return buffer.append(feng + "分").append(min + "秒").toString();
+    }
+    public static String setShowCountDownText2(int time) {
+        StringBuffer buffer = new StringBuffer();
+        int hour = 0;
+        int feng = time / 60;
+        int min = time % 60;
+        if (feng>=60){
+            hour = feng/60;
+            feng = feng-hour*60;
+            return buffer.append(hour + "小时").append(feng + "分").toString();
+        }
+        return buffer.append(feng + "分").toString();
+    }
+
 }
