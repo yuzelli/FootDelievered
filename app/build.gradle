@@ -11,7 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        applicationId "com.example.yuzelli.fooddelivered" //JPush上注册的包名.
+      //  applicationId "com.example.yuzelli.fooddelivered" //JPush上注册的包名.
         ndk {
             //选择要添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'

@@ -172,10 +172,13 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void convert(ViewHolder helper, OrderBean item, int position) {
                 helper.setImageByUrl(R.id.img_icon,item.getImg_url());
+                ImageView img_last_time = helper.getView(R.id.img_last_time);
                 long a  = OtherUtils.date2TimeStamp(item.getAdd_time())+Integer.valueOf(item.getOuttime())*60-System.currentTimeMillis()/1000;
                 if (a>0){
+                    img_last_time.setVisibility(View.GONE);
                     helper.setText(R.id.tv_orderTimes,"倒计时："+OtherUtils.setShowCountDownText2((int)a));
                 }else {
+                    img_last_time.setVisibility(View.VISIBLE);
                     helper.setText(R.id.tv_orderTimes,"超时："+OtherUtils.setShowCountDownText2(-(int)a));
                 }
                 helper.setText(R.id.tv_order_sn,"订单号："+item.getOrder_sn());
@@ -202,8 +205,6 @@ public class OrderFragment extends BaseFragment {
                 OrderDetailActivity.actionStart(context, orderListDatas.get(position-1));
             }
         });
-
-
 
         lvOrder.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override

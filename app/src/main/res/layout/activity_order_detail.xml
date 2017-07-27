@@ -16,7 +16,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:textColor="@color/next_color"
-        android:textSize="20sp" />
+        android:textSize="25sp" />
     <TextView
         android:id="@+id/tv_order_send_time"
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:textColor="@color/next_color"
-        android:textSize="20sp" />
+        android:textSize="25sp" />
 
     <ImageView
         android:id="@+id/img_order_info"
@@ -36,7 +36,12 @@
         android:layout_marginRight="20dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
+        android:visibility="gone"
         android:src="@drawable/img_no_order" />
+    <View
+        android:layout_width="0.1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
     <Button
         android:id="@+id/btn_receive_order"
