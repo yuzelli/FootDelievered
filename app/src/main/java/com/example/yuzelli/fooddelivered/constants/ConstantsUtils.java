@@ -29,7 +29,7 @@ public class ConstantsUtils {
 
 
 
-    public static final String ADDRESS_URL = "http://1.plum.applinzi.com/";
+    public static final String ADDRESS_URL = "http://1.mssd.applinzi.com/";
     public static final String USER_LOGIN = "appapi";
     public static final String REGISTER_USER = "appapi/register";
     public static final String NEW_ORDER_LIST = "appapi/get_new_order";

@@ -16,10 +16,11 @@
         android:scaleType="fitXY"
         android:textColor="@color/next_color"
         android:src="@drawable/splash7"
+        android:visibility="gone"
         android:textSize="18sp" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_toLeftOf="@+id/tv_order_where"
         android:layout_centerVertical="true"

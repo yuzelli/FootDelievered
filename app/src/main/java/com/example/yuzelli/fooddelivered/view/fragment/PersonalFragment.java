@@ -131,6 +131,7 @@ public class PersonalFragment extends BaseFragment {
     @Override
     protected void fillData() {
       if (isNeedGetNewOrderListData){
+          orderList.clear();
           getUserOrderList();
       }
         getUserInfo();
