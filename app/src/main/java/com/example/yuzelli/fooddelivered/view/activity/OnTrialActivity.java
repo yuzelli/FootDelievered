@@ -19,7 +19,7 @@ public class OnTrialActivity extends BaseActivity {
     TextView textView3;
     @BindView(R.id.textView4)
     TextView textView4;
-    String time = "2017-8-2 12:00";
+    String time = "2017-08-02 12:00:00";
 
     @Override
     protected int layoutInit() {
